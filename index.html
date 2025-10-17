@@ -80,6 +80,17 @@
     .producto:last-child {
       border-bottom: none;
     }
+    .separador {
+      font-weight: 700;
+      color: #1c5a8a;
+      padding: 0.5rem 0;
+      margin: 0.4rem 0;
+      border-bottom: 1px dashed #ecf0f1;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      font-size: 0.95rem;
+      user-select: none;
+    }
     .producto label {
       flex-grow: 1;
       cursor: pointer;
@@ -367,10 +378,29 @@
 
     function renderProductos() {
       productosDiv.innerHTML = '';
+      // Determinar índice donde empiezan las actividades (robusto buscando por nombre)
+      const firstActivityIndex = productos.findIndex(p => p.nombre === 'Videojuegos');
+      // Si no se encuentra, se coloca actividades al final
+      const actividadStart = firstActivityIndex >= 0 ? firstActivityIndex : productos.length;
+
+      // Añadir separador de comidas al inicio
+      productosDiv.appendChild(crearSeparador('Comidas'));
+
       productos.forEach((prod, idx) => {
+        // Cuando lleguemos al inicio de actividades, insertar separador
+        if (idx === actividadStart) {
+          productosDiv.appendChild(crearSeparador('Actividades'));
+        }
         const prodHTML = crearProductoHTML(prod, idx);
         productosDiv.appendChild(prodHTML);
       });
+    }
+
+    function crearSeparador(titulo) {
+      const div = document.createElement('div');
+      div.className = 'separador';
+      div.textContent = titulo;
+      return div;
     }
 
     function agregarProducto(index) {
